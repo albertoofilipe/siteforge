@@ -4,13 +4,39 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body,
 h1,
-p {
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure {
   margin: 0;
 }
 
-img {
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+img,
+picture,
+svg,
+canvas {
   display: block;
   max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }

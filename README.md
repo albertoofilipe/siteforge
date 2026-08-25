@@ -24,6 +24,24 @@ Template sem dependências para sites institucionais de médio porte (normalment
 
 `assets/js/main.js` é o único ponto de entrada JavaScript. Os módulos em `assets/js/core/` são pontos de extensão documentados: não ativam multilíngue, cache, carregamento dinâmico ou PWA nesta base.
 
+## Design System base
+
+O Design System está integralmente em `assets/css/`, sem bibliotecas externas. A ordem de importação em `index.html` também define a responsabilidade de cada camada:
+
+| Arquivo | Responsabilidade |
+| --- | --- |
+| `variables.css` | Tokens globais de cores, tipografia, espaçamentos, dimensões, camadas e movimento. |
+| `reset.css` | Normalização mínima e previsível dos elementos HTML. |
+| `base.css` | Estilos semânticos globais, incluindo tipografia, links, botões, formulários e foco. |
+| `layout.css` | Containers e estrutura de página. |
+| `components.css` | Componentes reutilizáveis, somente quando o projeto realmente os demandar. |
+| `utilities.css` | Pequeno conjunto de utilitários de acessibilidade, fluxo e texto. |
+| `responsive.css` | Ajustes Mobile First a partir dos breakpoints definidos como referência. |
+
+Personalize primeiro os tokens em `variables.css`. A escala usa espaçamentos de `--space-1` a `--space-9`, tamanhos de `--font-size-1` a `--font-size-7` e containers `sm`, `md` e `lg`. As media queries mantêm valores literais por limitação do CSS atual: custom properties não podem ser usadas na condição de uma media query.
+
+O foco visível é preservado com `:focus-visible`, e `prefers-reduced-motion` reduz transições, animações e rolagem suave. Evite adicionar `outline: none` sem fornecer um indicador de foco equivalente.
+
 ## Como usar
 
 1. Abra a pasta no VS Code.

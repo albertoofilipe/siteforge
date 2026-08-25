@@ -1,5 +1,10 @@
+/* Mobile First: ajustes progressivos a partir de 48rem (breakpoint-md). */
 @media (min-width: 48rem) {
+  :root {
+    --page-gutter: var(--space-6);
+  }
+
   .page-content {
-    padding-block: calc(var(--space-4) * 2);
+    padding-block: var(--space-7);
   }
 }

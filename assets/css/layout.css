@@ -1,5 +1,18 @@
-.page-content {
-  width: min(100% - 2rem, var(--content-width));
+.container {
+  width: min(100% - (var(--page-gutter) * 2), var(--container-lg));
   margin-inline: auto;
-  padding-block: var(--space-4);
+}
+
+.container-sm {
+  max-width: var(--container-sm);
+}
+
+.container-md {
+  max-width: var(--container-md);
+}
+
+.page-content {
+  width: min(100% - (var(--page-gutter) * 2), var(--content-width));
+  margin-inline: auto;
+  padding-block: var(--space-6);
 }
