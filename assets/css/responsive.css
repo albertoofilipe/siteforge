@@ -1,0 +1,5 @@
+@media (min-width: 48rem) {
+  .page-content {
+    padding-block: calc(var(--space-4) * 2);
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Institutional Website Architecture",
+  "short_name": "IWA",
+  "start_url": "../index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1f2933",
+  "icons": []
+}
