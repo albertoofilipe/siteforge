@@ -1,5 +1,14 @@
 {
   "common": {
     "language": "Language"
+  },
+  "footer": {
+    "copyright": "All rights reserved."
+  },
+  "navigation": {
+    "home": "Home"
+  },
+  "site": {
+    "name": "Institutional Website Architecture"
   }
 }

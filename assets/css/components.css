@@ -1,1 +1,48 @@
-/* Componentes reutilizáveis serão adicionados aqui quando forem necessários. */
+.site-header,
+.site-footer {
+  background: var(--color-background);
+}
+
+.site-header {
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.header-content,
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--header-height);
+}
+
+.site-brand {
+  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.site-nav ul {
+  display: flex;
+  gap: var(--space-3);
+  list-style: none;
+}
+
+.site-nav label {
+  margin-bottom: 0;
+}
+
+.site-nav select {
+  width: auto;
+}
+
+.site-footer {
+  border-top: var(--border-width) solid var(--color-border);
+  color: var(--color-text-muted);
+}

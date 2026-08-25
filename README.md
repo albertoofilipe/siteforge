@@ -37,7 +37,17 @@ O JavaScript usa ES Modules nativos. `assets/js/main.js` é o único ponto de en
 | `utils/validation.js` | Validações usadas pela configuração. |
 | `utils/helpers.js` | Mensagens de erro seguras para logs de desenvolvimento. |
 
-Falhas de rede, JSON inválido ou configuração inválida são registradas no console com contexto útil. A base não implementa componentes dinâmicos nem persistência de cache.
+Falhas de rede, JSON inválido ou configuração inválida são registradas no console com contexto útil. O cache ainda não é persistente entre sessões.
+
+## Componentes HTML reutilizáveis
+
+Os componentes comuns estão em `components/` como fragmentos HTML locais: `header.html`, `navbar.html` e `footer.html`. As páginas declaram apenas um slot, por exemplo `<div data-component-slot="header"></div>`, e `assets/js/components/component-loader.js` carrega o arquivo com o `loader` central.
+
+Essa abordagem foi escolhida por ser a opção mais estável para HTML, CSS e ES Modules puros: funciona em Live Server e em hospedagem estática comum, não exige compilação e mantém os fragmentos fáceis de editar por qualquer pessoa. O carregador usa `fetch` e `Range#createContextualFragment()` para inserir somente HTML controlado pelo próprio repositório, sem usar `innerHTML` e sem interpretar dados JSON como HTML.
+
+Um componente pode conter outros slots. O `header` inclui o `navbar` como opcional com `data-component-optional`; se ele falhar, o header continua disponível e um aviso é exibido no console. Falhas em componentes obrigatórios também são registradas, sem interromper o restante da inicialização.
+
+Para um comportamento específico futuro, passe um mapa explícito de inicializadores a `createComponentLoader`, como `{ navbar: initNavbar }`. O inicializador recebe o slot já preenchido, pode ser assíncrono e não precisa registrar estado global. CSS de componentes fica em `assets/css/components.css`; cada componente deve manter seu HTML sem scripts ou estilos inline.
 
 ## Configuração central
 

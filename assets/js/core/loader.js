@@ -1,14 +1,22 @@
-/** Centraliza o carregamento assíncrono de dados JSON. */
+/** Centraliza o carregamento assíncrono de recursos textuais e JSON. */
 export function createResourceLoader({ cache } = {}) {
   async function loadJson(resource) {
+    return loadResource(resource, 'json');
+  }
+
+  async function loadText(resource) {
+    return loadResource(resource, 'text');
+  }
+
+  async function loadResource(resource, type) {
     const url = new URL(resource, document.baseURI);
-    const key = url.href;
+    const key = `${type}:${url.href}`;
 
     if (cache?.has(key)) {
       return cache.get(key);
     }
 
-    const request = fetchJson(url);
+    const request = fetchResource(url, type);
     cache?.set(key, request);
 
     try {
@@ -19,10 +27,10 @@ export function createResourceLoader({ cache } = {}) {
     }
   }
 
-  return Object.freeze({ loadJson });
+  return Object.freeze({ loadJson, loadText });
 }
 
-async function fetchJson(url) {
+async function fetchResource(url, type) {
   let response;
 
   try {
@@ -38,9 +46,10 @@ async function fetchJson(url) {
   }
 
   try {
-    return await response.json();
+    return type === 'json' ? await response.json() : await response.text();
   } catch (error) {
-    throw new Error(`[loader] O arquivo "${url.href}" não contém JSON válido.`, {
+    const resourceType = type === 'json' ? 'JSON válido' : 'texto válido';
+    throw new Error(`[loader] O arquivo "${url.href}" não contém ${resourceType}.`, {
       cause: error,
     });
   }

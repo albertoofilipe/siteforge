@@ -1,4 +1,5 @@
 import { createCache } from './cache.js';
+import { createComponentLoader } from '../components/component-loader.js';
 import { loadConfig } from './config.js';
 import { applyTranslations, createI18n, getCurrentPage } from './i18n.js';
 import { createResourceLoader } from './loader.js';
@@ -14,10 +15,12 @@ export async function initApp() {
     const i18n = createI18n(config, loader);
     const page = getCurrentPage();
     const translations = await i18n.loadPage(page);
+    const componentLoader = createComponentLoader({ loader });
 
     setDocumentLanguage(i18n.locale);
     setDocumentTitle(config.company.name);
     applyTheme(config.theme);
+    await componentLoader.load(document);
     applyTranslations(translations);
 
     if (config.options.showLanguageSelector) {
@@ -30,7 +33,7 @@ export async function initApp() {
       });
     }
 
-    return Object.freeze({ cache, config, i18n, loader, page, translations });
+    return Object.freeze({ cache, componentLoader, config, i18n, loader, page, translations });
   } catch (error) {
     console.error('[app] Falha ao carregar a configuração inicial.', error);
     throw error;
