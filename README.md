@@ -37,7 +37,43 @@ O JavaScript usa ES Modules nativos. `assets/js/main.js` é o único ponto de en
 | `utils/validation.js` | Validações usadas pela configuração. |
 | `utils/helpers.js` | Mensagens de erro seguras para logs de desenvolvimento. |
 
-O template requer que `config.json` tenha `siteName`, `defaultLocale` e `supportedLocales`; a localidade padrão precisa constar na lista de suportadas. Falhas de rede, JSON inválido ou configuração inválida são registradas no console com contexto útil. A base não implementa carregamento de traduções, componentes dinâmicos ou persistência de cache.
+Falhas de rede, JSON inválido ou configuração inválida são registradas no console com contexto útil. A base não implementa carregamento de traduções, componentes dinâmicos ou persistência de cache.
+
+## Configuração central
+
+O arquivo [data/config.json](/home/alberto/Documentos/projetos-estudos/siteforge/data/config.json) concentra somente dados que variam por cliente. Ele é carregado uma vez no ciclo de inicialização, validado por `core/config.js`, congelado para evitar mutações acidentais e disponibilizado apenas no contexto retornado por `initApp()`.
+
+| Seção | Pode ser alterado |
+| --- | --- |
+| `company` | Nome e descrição institucional curta usada como metadado. |
+| `assets` | Caminhos ou URLs seguros do logo e favicon. |
+| `contacts` | Telefone, WhatsApp, e-mail e endereço estruturado. |
+| `social` | Redes sociais como pares de nome e URL HTTPS. |
+| `urls` | URL institucional, páginas legais e outros links do site. |
+| `locales` | Idioma padrão e idiomas disponíveis. |
+| `theme` | Esquema de cor, cor primária, hover e raio padrão. |
+| `options` | Opções booleanas do site, como busca ou seletor de idioma. |
+
+Não coloque textos de páginas, blocos HTML, código JavaScript, dados de usuários, senhas, tokens, API keys, chaves privadas ou strings de conexão nesse arquivo. O JSON é público quando servido pelo site e nunca deve conter segredos. Seus valores são tratados como dados: o template não os executa como código nem os insere com `innerHTML`.
+
+### Redes sociais
+
+`social` aceita novas redes sem alterar JavaScript. Acrescente uma chave em lowercase e uma URL absoluta HTTP(S):
+
+```json
+"social": {
+  "instagram": "https://www.instagram.com/minhaempresa",
+  "linkedin": "https://www.linkedin.com/company/minhaempresa"
+}
+```
+
+### Idiomas
+
+Defina o idioma principal em `locales.default` e relacione todos os suportados em `locales.available`. O valor padrão precisa existir na lista; por exemplo, `"default": "pt-BR"` exige `"pt-BR"` em `available`. A base seleciona o idioma inicial, mas o carregamento dos arquivos de tradução ainda será implementado quando necessário.
+
+### Tema
+
+Em `theme`, use `colorScheme` como `"light"` ou `"dark"`, cores no formato hexadecimal de seis dígitos (por exemplo, `"#075985"`) e um valor simples para `borderRadius`, como `"0.5rem"`. Na inicialização, esses valores atualizam os tokens CSS de cor primária e raio médio. Para alterações visuais mais amplas, mantenha os demais tokens em `assets/css/variables.css`.
 
 ## Design System base
 

@@ -1,5 +1,45 @@
 {
-  "siteName": "Institutional Website Architecture",
-  "defaultLocale": "pt-BR",
-  "supportedLocales": ["pt-BR", "en"]
+  "company": {
+    "name": "Institutional Website Architecture",
+    "description": "Template para sites institucionais de médio porte."
+  },
+  "assets": {
+    "logo": {
+      "src": "public/favicon.svg",
+      "alt": "Institutional Website Architecture"
+    },
+    "favicon": "public/favicon.svg"
+  },
+  "contacts": {
+    "phone": "+244 900 000 000",
+    "whatsapp": "+244900000000",
+    "email": "contacto@example.com",
+    "address": {
+      "line1": "Rua Exemplo, 123",
+      "city": "Luanda",
+      "country": "Angola"
+    }
+  },
+  "social": {
+    "linkedin": "https://www.linkedin.com/company/example"
+  },
+  "urls": {
+    "website": "https://example.com",
+    "privacy": "pages/privacy.html"
+  },
+  "locales": {
+    "default": "pt-BR",
+    "available": ["pt-BR", "en"]
+  },
+  "theme": {
+    "colorScheme": "light",
+    "primaryColor": "#075985",
+    "primaryHoverColor": "#0c4a6e",
+    "borderRadius": "0.5rem"
+  },
+  "options": {
+    "enableSearch": false,
+    "maintenanceMode": false,
+    "showLanguageSelector": true
+  }
 }

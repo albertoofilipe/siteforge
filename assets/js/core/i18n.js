@@ -12,12 +12,12 @@ export function resolveLocale(preferredLocale, supportedLocales, defaultLocale) 
 export function createI18n(config, preferredLocale = typeof navigator === 'undefined' ? null : navigator.language) {
   const locale = resolveLocale(
     preferredLocale,
-    config.supportedLocales,
-    config.defaultLocale,
+    config.locales.available,
+    config.locales.default,
   );
 
   return Object.freeze({
     locale,
-    supportedLocales: config.supportedLocales,
+    supportedLocales: config.locales.available,
   });
 }
