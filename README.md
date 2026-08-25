@@ -22,7 +22,22 @@ Template sem dependências para sites institucionais de médio porte (normalment
 | `public/` | Metadados e arquivos públicos do site. |
 | `errors/` | Páginas estáticas de erro. |
 
-`assets/js/main.js` é o único ponto de entrada JavaScript. Os módulos em `assets/js/core/` são pontos de extensão documentados: não ativam multilíngue, cache, carregamento dinâmico ou PWA nesta base.
+## Arquitetura JavaScript
+
+O JavaScript usa ES Modules nativos. `assets/js/main.js` é o único ponto de entrada e inicia a aplicação somente após o DOM estar disponível. Não há estado em `window` nem store global: `initApp()` cria e retorna um contexto local para o ciclo atual.
+
+| Módulo | Responsabilidade |
+| --- | --- |
+| `core/app.js` | Coordena cache, loader, configuração e contexto de idioma inicial. |
+| `core/config.js` | Carrega e valida `data/config.json`. |
+| `core/loader.js` | Centraliza `fetch` de JSON, erros de rede e cache do recurso. |
+| `core/cache.js` | Cria um cache em memória privado para cada inicialização. |
+| `core/i18n.js` | Escolhe um idioma suportado; ainda não carrega traduções. |
+| `utils/dom.js` | Atualizações pequenas e reutilizáveis do documento. |
+| `utils/validation.js` | Validações usadas pela configuração. |
+| `utils/helpers.js` | Mensagens de erro seguras para logs de desenvolvimento. |
+
+O template requer que `config.json` tenha `siteName`, `defaultLocale` e `supportedLocales`; a localidade padrão precisa constar na lista de suportadas. Falhas de rede, JSON inválido ou configuração inválida são registradas no console com contexto útil. A base não implementa carregamento de traduções, componentes dinâmicos ou persistência de cache.
 
 ## Design System base
 
