@@ -32,12 +32,12 @@ O JavaScript usa ES Modules nativos. `assets/js/main.js` é o único ponto de en
 | `core/config.js` | Carrega e valida `data/config.json`. |
 | `core/loader.js` | Centraliza `fetch` de JSON, erros de rede e cache do recurso. |
 | `core/cache.js` | Cria um cache em memória privado para cada inicialização. |
-| `core/i18n.js` | Escolhe um idioma suportado; ainda não carrega traduções. |
+| `core/i18n.js` | Detecta idioma, carrega traduções por página e aplica fallback. |
 | `utils/dom.js` | Atualizações pequenas e reutilizáveis do documento. |
 | `utils/validation.js` | Validações usadas pela configuração. |
 | `utils/helpers.js` | Mensagens de erro seguras para logs de desenvolvimento. |
 
-Falhas de rede, JSON inválido ou configuração inválida são registradas no console com contexto útil. A base não implementa carregamento de traduções, componentes dinâmicos ou persistência de cache.
+Falhas de rede, JSON inválido ou configuração inválida são registradas no console com contexto útil. A base não implementa componentes dinâmicos nem persistência de cache.
 
 ## Configuração central
 
@@ -74,6 +74,37 @@ Defina o idioma principal em `locales.default` e relacione todos os suportados e
 ### Tema
 
 Em `theme`, use `colorScheme` como `"light"` ou `"dark"`, cores no formato hexadecimal de seis dígitos (por exemplo, `"#075985"`) e um valor simples para `borderRadius`, como `"0.5rem"`. Na inicialização, esses valores atualizam os tokens CSS de cor primária e raio médio. Para alterações visuais mais amplas, mantenha os demais tokens em `assets/css/variables.css`.
+
+## Sistema multilíngue
+
+As traduções ficam em `data/<idioma>/`, separadas entre `global.json` e um arquivo por página. Cada página informa seu identificador no atributo `data-page` do `body`; por exemplo, a home usa `<body data-page="home">` e carrega `global.json` e `home.json`.
+
+```text
+data/
+  pt-BR/{global,home,about,services,contact}.json
+  en/{global,home,about,services,contact}.json
+```
+
+O idioma é escolhido nesta ordem: parâmetro `?lang=`, preferência do navegador e `locales.default` de `config.json`. O seletor nativo é criado no elemento `[data-language-selector]`; ao alterar a opção, ele atualiza `?lang=<idioma>` e recarrega a página. Novos idiomas não exigem mudanças na lógica central.
+
+### Adicionar um idioma
+
+1. Inclua o código em `locales.available` no `data/config.json`.
+2. Crie `data/<codigo>/`.
+3. Copie os arquivos JSON de um idioma existente e traduza os valores.
+4. Opcionalmente, defina esse código em `locales.default`.
+
+### Adicionar uma tradução
+
+Adicione a mesma chave no arquivo da página e use-a no HTML com `data-i18n`. Por exemplo, `"hero.title"` no JSON corresponde a `data-i18n="hero.title"`. O texto é aplicado com `textContent`, nunca com `innerHTML`. Se a chave não existir, o conteúdo estático presente no HTML é preservado; se houver a chave correspondente no idioma padrão, ela é usada antes.
+
+### Fallback e cache
+
+Para uma página em idioma diferente do padrão, o sistema carrega os arquivos do idioma atual e do idioma padrão. Uma chave ausente ou um arquivo indisponível usa o valor do idioma padrão; se este também falhar, o site continua sem lançar erro e registra um aviso no console. O `loader` reaproveita cada requisição por URL em um cache em memória, inclusive para chamadas concorrentes. Esse cache dura somente enquanto a página estiver aberta; o cache HTTP do navegador continua sendo utilizado normalmente.
+
+### Limitações atuais
+
+O sistema depende de `fetch`, portanto abra o projeto por HTTP usando Live Server — não por `file://`. Na hospedagem estática, publique a pasta `data/` sem bloqueá-la e preserve os caminhos relativos. A troca de idioma é dinâmica e usa query string; título, metadados, `hreflang`, URLs localizadas e indexação SEO multilíngue definitiva ainda não foram implementados. Para SEO completo, cada idioma deverá ter URLs e HTML pré-renderizados ou gerados no servidor.
 
 ## Design System base
 

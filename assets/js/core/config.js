@@ -3,6 +3,7 @@ import { isNonEmptyString, isPlainObject, isStringArray } from '../utils/validat
 const configUrl = new URL('../../../data/config.json', import.meta.url);
 const colorPattern = /^#[0-9a-f]{6}$/i;
 const cssSizePattern = /^(?:0|[0-9]+(?:\.[0-9]+)?(?:px|rem|em|%))$/;
+const localePattern = /^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/i;
 
 /** Carrega e valida as configurações essenciais do site. */
 export async function loadConfig(loader, url = configUrl) {
@@ -94,6 +95,10 @@ function validateLocales(locales) {
 
   if (!isStringArray(locales.available)) {
     throw new TypeError('[config] "locales.available" deve ser uma lista de textos não vazios.');
+  }
+
+  if (!localePattern.test(locales.default) || !locales.available.every((locale) => localePattern.test(locale))) {
+    throw new TypeError('[config] Os idiomas devem usar códigos seguros, como "pt-BR" ou "en".');
   }
 
   if (!locales.available.includes(locales.default)) {
