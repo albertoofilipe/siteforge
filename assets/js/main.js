@@ -14,3 +14,20 @@ if (document.readyState === 'loading') {
 } else {
   start();
 }
+
+registerServiceWorker();
+
+/** Registra o cache estático apenas em contextos seguros, sem atrasar a página. */
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator) || !window.isSecureContext) {
+    return;
+  }
+
+  window.addEventListener('load', () => {
+    const serviceWorkerUrl = new URL('../../sw.js', import.meta.url);
+
+    navigator.serviceWorker.register(serviceWorkerUrl).catch((error) => {
+      console.warn('[pwa] O Service Worker não pôde ser registrado.', error);
+    });
+  }, { once: true });
+}

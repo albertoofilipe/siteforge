@@ -1,9 +1,18 @@
 {
   "name": "Institutional Website Architecture",
   "short_name": "IWA",
+  "description": "Template institucional modular, acessível e orientado por dados.",
   "start_url": "../index.html",
+  "scope": "../",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#1f2933",
-  "icons": []
+  "theme_color": "#075985",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

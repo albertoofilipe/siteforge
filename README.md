@@ -176,7 +176,7 @@ A base prioriza tempo de carregamento percebido e manutenção simples. Não há
 - A configuração é carregada uma vez. Depois dela, os JSONs de idioma e os componentes HTML iniciam em paralelo para evitar uma cascata entre conteúdo e interface.
 - `createResourceLoader` mantém um cache em memória por URL e tipo durante a página aberta, inclusive para chamadas simultâneas. Preserve esse ponto central de carregamento em vez de fazer `fetch` avulso nos componentes.
 - Os arquivos JSON devem conter apenas o conteúdo da página necessária, sem duplicar catálogos grandes em cada idioma. Use uma chave de página nova quando houver uma página nova.
-- Não registre um Service Worker apenas para cachear esta demo. Defina uma estratégia versionada e teste atualizações offline antes de ativá-lo; um cache desatualizado prejudica mais do que uma requisição pequena.
+- O Service Worker da base PWA usa uma versão explícita e cacheia somente o shell estático conhecido. Não amplie a lista para respostas de API, dados de usuários ou catálogos sem antes definir expiração, invalidação e privacidade.
 
 ### Imagens, ícones e fontes
 
@@ -211,6 +211,24 @@ Exemplo de imagem responsiva fora da primeira dobra:
 - Evite CSS e JavaScript duplicados; regras comuns de botão ficam compartilhadas em `base.css`, enquanto a apresentação específica do link-botão permanece em `components.css`.
 - Antes de publicar, avalie uma página em rede móvel e um dispositivo de menor capacidade. Verifique LCP, CLS e INP, requisições bloqueantes, peso das imagens e se a troca de idioma continua usando os JSONs esperados.
 
+## PWA básica
+
+A base PWA está ativa para navegadores compatíveis em HTTPS (ou `localhost`). O manifesto em `public/manifest.json` fornece nome, descrição, cores, modo `standalone`, URL inicial e o favicon SVG como ícone `any maskable`. Para produção que exige suporte em plataformas sem ícones SVG, acrescente versões PNG quadradas — normalmente 192×192 e 512×512 — e liste-as no manifesto.
+
+O registro ocorre depois do evento `load`, portanto não bloqueia a renderização inicial. O `sw.js` faz precache apenas do shell: HTML, CSS, JavaScript, componentes, favicon, manifesto e os JSONs estáticos da home nos idiomas disponíveis. Para esses recursos, usa cache-first; para navegações, tenta a rede primeiro e usa a home em cache apenas se estiver offline. Não intercepta `POST`, outras origens, JSONs não listados, APIs ou respostas inválidas. Uma resposta só entra no cache quando `response.ok` é verdadeiro.
+
+### Atualizações
+
+Quando o shell mudar, altere `CACHE_NAME` no `sw.js` (por exemplo, de `siteforge-shell-v1` para `siteforge-shell-v2`). O novo worker prepara o cache em segundo plano, remove versões anteriores depois da ativação e assume novos clientes sem interromper uma página já aberta. A mensagem `SKIP_WAITING` está disponível para uma futura interface de “atualização disponível”, mas a base não força uma atualização durante a sessão atual.
+
+### Desativar ou remover
+
+1. Remova `<link rel="manifest">` de `index.html` e a chamada `registerServiceWorker()` de `assets/js/main.js`.
+2. Remova ou deixe de publicar `public/manifest.json` e `sw.js` quando nenhum projeto usar PWA.
+3. Para instalações que já receberam o worker, peça uma atualização única com o worker ainda publicado e instrua a remover o registro em DevTools → Application → Service Workers, ou limpe os dados do site. Usuários que instalaram o app também podem desinstalá-lo pelo sistema operacional.
+
+Não use a PWA em ambientes HTTP públicos: Service Workers exigem contexto seguro. Em desenvolvimento, valide instalação, atualização e modo offline em `localhost` antes de publicar.
+
 ## Como usar
 
 1. Abra a pasta no VS Code.
@@ -226,4 +244,4 @@ Pastas e arquivos usam lowercase. As classes CSS usam nomes curtos e descritivos
 
 - Substituir `public/favicon.svg`; se necessário, adicionar `favicon.ico` e `apple-touch-icon.png` gerados a partir da identidade visual.
 - Atualizar o domínio de exemplo em `public/sitemap.xml` e a rota em `public/robots.txt`.
-- Completar `public/manifest.json` e `sw.js` somente se PWA for requisitado.
+- Se o projeto não precisar de instalação, siga a seção “Desativar ou remover” para retirar manifesto e Service Worker.
