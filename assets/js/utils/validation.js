@@ -75,11 +75,11 @@ function assertComponentUrls(element, baseUrl) {
 }
 
 function assertSafeExternalTarget(element) {
-  if (element.getAttribute('target') !== '_blank') {
+  if (element.getAttribute('target')?.toLowerCase() !== '_blank') {
     return;
   }
 
-  const relTokens = new Set((element.getAttribute('rel') ?? '').split(/\s+/));
+  const relTokens = new Set((element.getAttribute('rel') ?? '').toLowerCase().split(/\s+/));
 
   if (!relTokens.has('noopener') || !relTokens.has('noreferrer')) {
     throw new TypeError('[components] Links com target="_blank" exigem rel="noopener noreferrer".');

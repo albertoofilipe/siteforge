@@ -24,8 +24,7 @@
     "linkedin": "https://www.linkedin.com/company/example"
   },
   "urls": {
-    "website": "https://example.com",
-    "privacy": "pages/privacy.html"
+    "website": "https://example.com"
   },
   "locales": {
     "default": "pt-BR",

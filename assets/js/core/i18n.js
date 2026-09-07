@@ -99,11 +99,9 @@ function getTranslationValue(key, current, fallback, fallbackValue) {
 }
 
 function getValue(source, key) {
-  const value = key.split('.').reduce((entry, part) => {
+  return key.split('.').reduce((entry, part) => {
     return isPlainObject(entry) ? entry[part] : undefined;
   }, source);
-
-  return typeof value === 'string' ? value : undefined;
 }
 
 function getPreferredLocale(locationRef = typeof window === 'undefined' ? null : window.location) {
