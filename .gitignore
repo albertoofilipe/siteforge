@@ -2,8 +2,22 @@
 .DS_Store
 Thumbs.db
 
+# Logs and local tooling output
+*.log
+coverage/
+.cache/
+.tmp/
+tmp/
+
+# Optional dependency managers and build output
+node_modules/
+dist/
+build/
+
 # Editor settings
 .vscode/
+.idea/
+*.code-workspace
 
 # Local environment files
 .env
