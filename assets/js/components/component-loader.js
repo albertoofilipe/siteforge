@@ -1,3 +1,5 @@
+import { assertSafeComponentFragment } from '../utils/validation.js';
+
 const componentsUrl = new URL('../../../components/', import.meta.url);
 const componentNamePattern = /^[a-z0-9-]+$/;
 
@@ -33,6 +35,8 @@ export function createComponentLoader({ initializers = {}, loader } = {}) {
     try {
       const markup = await loader.loadText(new URL(`${name}.html`, componentsUrl));
       const fragment = document.createRange().createContextualFragment(markup);
+
+      assertSafeComponentFragment(fragment, componentsUrl);
 
       slot.replaceChildren(fragment);
       slot.dataset.componentLoaded = 'true';

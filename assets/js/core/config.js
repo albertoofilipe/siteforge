@@ -1,4 +1,4 @@
-import { isNonEmptyString, isPlainObject, isStringArray } from '../utils/validation.js';
+import { isNonEmptyString, isPlainObject, isSafeHttpUrl, isStringArray } from '../utils/validation.js';
 
 const configUrl = new URL('../../../data/config.json', import.meta.url);
 const colorPattern = /^#[0-9a-f]{6}$/i;
@@ -176,14 +176,9 @@ function assertSafeUrl(value, field, allowRelative) {
 }
 
 function isSafeUrl(value) {
-  try {
-    const url = new URL(value, 'https://template.local/');
-    return ['http:', 'https:'].includes(url.protocol);
-  } catch {
-    return false;
-  }
+  return isSafeHttpUrl(value, { allowRelative: true });
 }
 
 function isWebUrl(value) {
-  return isSafeUrl(value) && /^https?:\/\//i.test(value);
+  return isSafeHttpUrl(value);
 }

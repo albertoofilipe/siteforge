@@ -229,6 +229,37 @@ Quando o shell mudar, altere `CACHE_NAME` no `sw.js` (por exemplo, de `siteforge
 
 Não use a PWA em ambientes HTTP públicos: Service Workers exigem contexto seguro. Em desenvolvimento, valide instalação, atualização e modo offline em `localhost` antes de publicar.
 
+## Segurança
+
+O template trata todo JSON como dado público e todo texto dinâmico como texto, não como HTML. Não há `innerHTML`, `eval`, execução de strings, `localStorage`, `sessionStorage` ou formulários na base. A ausência desses recursos não é uma limitação: é uma escolha para reduzir a superfície de ataque até que haja um caso de uso definido.
+
+### Regras para dados e conteúdo dinâmico
+
+- Nunca inclua senhas, tokens, API keys privadas, strings de conexão, credenciais de serviços ou dados pessoais sensíveis em `data/`, JavaScript, manifesto, Service Worker ou HTML. Todo arquivo servido ao navegador pode ser lido pelo visitante.
+- Use `textContent` para conteúdo vindo de JSON. Não use `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `eval`, `Function` ou handlers como `onclick` com textos, parâmetros de URL ou dados remotos.
+- Valide a forma e o tipo dos dados antes de usá-los. `utils/validation.js` oferece validação de objetos, listas, URLs HTTP(S) e origem; reutilize essas funções em vez de criar verificações divergentes.
+- Não transforme strings em código nem aceite nomes de arquivos, nomes de componentes ou caminhos vindos diretamente da URL. Idioma e página já são restringidos a listas e padrões conhecidos antes de formar caminhos de JSON.
+
+### URLs, links e componentes
+
+- Recursos carregados por `createResourceLoader` precisam ser HTTP(S) e da mesma origem. Não use esse loader para baixar componentes, scripts ou JSON de domínios arbitrários.
+- URLs configuradas passam por validação de protocolo e não aceitam credenciais embutidas. Para links externos abertos em nova aba, use sempre `target="_blank" rel="noopener noreferrer"`.
+- Fragmentos em `components/` são arquivos controlados pelo repositório, mas ainda passam pela validação antes de entrar no DOM. Scripts, estilos, iframes, handlers `on*`, `srcdoc`, URLs não seguras e links externos sem o `rel` adequado são rejeitados.
+- Ao precisar mostrar HTML rico de CMS ou de um usuário, não o injete diretamente. Faça sanitização no servidor com uma política explícita e trate o resultado como uma funcionalidade separada do template.
+
+### Formulários, parâmetros e PWA
+
+- Quando forem adicionados formulários, valide no cliente apenas para experiência de uso e repita a validação no servidor. Use HTTPS, proteção CSRF para sessões autenticadas, limites de requisição e mensagens de erro que não exponham dados internos.
+- Parâmetros de URL podem escolher somente valores de uma allowlist; nunca devem controlar redirecionamentos, URLs de `fetch`, seletores ou HTML. Links de retorno devem ser internos e validados no servidor.
+- O Service Worker só considera `GET` da mesma origem e cacheia uma lista fixa de arquivos estáticos. Mantenha dados autenticados, APIs e respostas personalizadas fora de `SHELL_URLS`.
+
+### Revisão antes de publicar
+
+- [ ] Procurar por segredos antes de cada commit e manter arquivos `.env` fora da pasta pública e do controle de versão.
+- [ ] Confirmar que novos dados são inseridos com APIs do DOM seguras, como `textContent` e `setAttribute` após validação.
+- [ ] Revisar cada `target="_blank"` para garantir `rel="noopener noreferrer"`.
+- [ ] Testar entradas inválidas de URL, idioma, formulário e conteúdo remoto sem expor stack traces ou detalhes internos ao visitante.
+
 ## Como usar
 
 1. Abra a pasta no VS Code.

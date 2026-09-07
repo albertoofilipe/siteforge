@@ -1,3 +1,5 @@
+import { isSafeSameOriginUrl } from '../utils/validation.js';
+
 /** Centraliza o carregamento assíncrono de recursos textuais e JSON. */
 export function createResourceLoader({ cache } = {}) {
   async function loadJson(resource) {
@@ -10,6 +12,11 @@ export function createResourceLoader({ cache } = {}) {
 
   async function loadResource(resource, type) {
     const url = new URL(resource, document.baseURI);
+
+    if (!isSafeSameOriginUrl(url, document.baseURI)) {
+      throw new TypeError('[loader] Recursos devem usar uma URL HTTP(S) da mesma origem.');
+    }
+
     const key = `${type}:${url.href}`;
 
     if (cache?.has(key)) {
