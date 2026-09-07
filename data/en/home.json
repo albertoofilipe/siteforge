@@ -1,4 +1,8 @@
 {
+  "seo": {
+    "title": "Institutional template — Demonstration architecture",
+    "description": "A demonstration of a modular, accessible, content-driven architecture for institutional websites."
+  },
   "hero": {
     "eyebrow": "Institutional template",
     "title": "A clear foundation for institutional websites.",

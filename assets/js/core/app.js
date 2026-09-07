@@ -4,7 +4,7 @@ import { initHome } from '../features/home.js';
 import { loadConfig } from './config.js';
 import { applyTranslations, createI18n, getCurrentPage } from './i18n.js';
 import { createResourceLoader } from './loader.js';
-import { applyTheme, setDocumentLanguage, setDocumentTitle } from '../utils/dom.js';
+import { applyDocumentMetadata, applyTheme, setDocumentLanguage } from '../utils/dom.js';
 import { initLanguageSelector } from '../components/language-selector.js';
 
 /** Coordena a inicialização e retorna o contexto local da aplicação. */
@@ -19,7 +19,13 @@ export async function initApp() {
     const componentLoader = createComponentLoader({ loader });
 
     setDocumentLanguage(i18n.locale);
-    setDocumentTitle(config.company.name);
+    applyDocumentMetadata({
+      description: translations.translate('seo.description', config.company.description),
+      locale: i18n.locale,
+      siteName: config.company.name,
+      siteUrl: config.urls.website,
+      title: translations.translate('seo.title', config.company.name),
+    });
     applyTheme(config.theme);
     await componentLoader.load(document);
     applyTranslations(translations);
@@ -32,7 +38,7 @@ export async function initApp() {
       const selector = document.querySelector('[data-language-selector]');
       initLanguageSelector(selector, {
         currentLocale: i18n.locale,
-        label: translations.translate('common.language', 'Idioma'),
+        label: translations.translate('common.language'),
         locales: i18n.supportedLocales,
         onChange: changeLocale,
       });

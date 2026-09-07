@@ -114,7 +114,7 @@ Para uma página em idioma diferente do padrão, o sistema carrega os arquivos d
 
 ### Limitações atuais
 
-O sistema depende de `fetch`, portanto abra o projeto por HTTP usando Live Server — não por `file://`. Na hospedagem estática, publique a pasta `data/` sem bloqueá-la e preserve os caminhos relativos. A troca de idioma é dinâmica e usa query string; título, metadados, `hreflang`, URLs localizadas e indexação SEO multilíngue definitiva ainda não foram implementados. Para SEO completo, cada idioma deverá ter URLs e HTML pré-renderizados ou gerados no servidor.
+O sistema depende de `fetch`, portanto abra o projeto por HTTP usando Live Server — não por `file://`. Na hospedagem estática, publique a pasta `data/` sem bloqueá-la e preserve os caminhos relativos. A troca de idioma é dinâmica e usa query string; para SEO multilíngue definitivo, cada idioma deverá ter URLs próprias, marcação `hreflang` e HTML pré-renderizado ou gerado no servidor.
 
 ## Design System base
 
@@ -133,6 +133,39 @@ O Design System está integralmente em `assets/css/`, sem bibliotecas externas. 
 Personalize primeiro os tokens em `variables.css`. A escala usa espaçamentos de `--space-1` a `--space-9`, tamanhos de `--font-size-1` a `--font-size-7` e containers `sm`, `md` e `lg`. As media queries mantêm valores literais por limitação do CSS atual: custom properties não podem ser usadas na condição de uma media query.
 
 O foco visível é preservado com `:focus-visible`, e `prefers-reduced-motion` reduz transições, animações e rolagem suave. Evite adicionar `outline: none` sem fornecer um indicador de foco equivalente.
+
+## SEO e acessibilidade
+
+O template é uma demonstração e, por segurança, vem com `noindex, nofollow` em `index.html`, páginas de erro e `Disallow: /` em `public/robots.txt`. O sitemap em `public/sitemap.xml` está intencionalmente vazio: uma URL de exemplo não deve ser publicada nem indexada. A referência em `robots.txt` usa o domínio de exemplo e deve ser substituída junto com o sitemap. Antes do lançamento, remova essas proteções somente depois de configurar o domínio e o conteúdo reais.
+
+### SEO por projeto
+
+1. Em `data/config.json`, defina `company.name`, `company.description` e `urls.website` com os dados reais e a URL HTTPS canônica, sem barra ou query strings indevidas.
+2. Em cada página, defina um único `<title>`, uma meta description específica, canonical absoluto, `robots` adequado e os metadados Open Graph/Twitter. Para a home, os valores localizados ficam em `seo.title` e `seo.description` no `home.json`; a estrutura já inclui `og:type`, título, descrição, URL, locale e `twitter:card`.
+3. O JavaScript mantém título, description, canonical e metadados de compartilhamento coerentes com a configuração durante a navegação. Como robôs não são obrigados a executar JavaScript, os valores estáticos no `<head>` também devem ser atualizados no HTML ou pré-renderizados para a produção.
+4. Depois de substituir `example.com`, preencha `public/sitemap.xml` somente com URLs canônicas, indexáveis e que respondam com HTTP 200. Atualize `public/robots.txt` com a URL absoluta do sitemap e permita apenas as rotas públicas.
+5. Use caminhos relativos consistentes no site e URLs HTTPS absolutas apenas em canonical, sitemap, Open Graph e configurações externas. Não inclua URLs com `?lang=` como canonical.
+6. Adicione dados estruturados (JSON-LD) apenas quando houver dados reais e verificáveis, como `Organization`, `LocalBusiness`, `WebSite`, `BreadcrumbList` ou `Service`. Esta demo não declara schema para não representar uma organização fictícia.
+7. Use `alt` descritivo em imagens que informam algo; para imagens estritamente decorativas, use `alt=""`. Não use o nome do arquivo como alternativa textual. Adicione `og:image` e `twitter:image` apenas quando existir uma imagem pública, representativa e com dimensões adequadas.
+
+### Regras de acessibilidade
+
+- Mantenha um `<main>` por página, header/footer semânticos, navegação em `<nav>` e seções com um heading associado. A home tem um único `<h1>` e utiliza `<h2>` para as seções e `<h3>` nos cards.
+- Todo link precisa ter destino e texto que explique sua ação; use `<button>` somente para uma ação na interface, nunca para navegação.
+- Preserve a navegação por teclado e o foco visível. Não remova o estilo `:focus-visible` e mantenha o link de salto para `#main-content` como primeiro elemento focável.
+- Todo campo de formulário precisa de `<label>` associado. O seletor de idioma usa um `<label>` nativo; não acrescente `aria-label` quando o label visível já fornece o nome acessível.
+- Prefira HTML nativo a ARIA. Use ARIA apenas para complementar uma relação que HTML não expresse; landmarks, headings, links e labels já entregam a maior parte da semântica necessária.
+- Verifique contraste de texto, controles e foco ao alterar tokens de cor. As combinações padrão usam texto escuro em superfícies claras e texto branco nos controles primários/CTA.
+- Respeite `prefers-reduced-motion`: animações, transições e rolagem suave devem continuar reduzíveis para pessoas sensíveis a movimento.
+
+### Checklist antes de publicar
+
+- [ ] Remover `noindex, nofollow` e `Disallow: /` somente para páginas prontas para busca.
+- [ ] Substituir todas as ocorrências de `example.com` pelo domínio final HTTPS.
+- [ ] Preencher sitemap e referenciá-lo por URL absoluta em `robots.txt`.
+- [ ] Conferir títulos, descriptions, canonical e previews Open Graph/Twitter de cada URL pública.
+- [ ] Testar navegação apenas com teclado, foco visível, zoom de 200% e preferência por movimento reduzido.
+- [ ] Revisar headings, textos de links, labels e alternativas de todas as imagens novas.
 
 ## Como usar
 

@@ -1,4 +1,8 @@
 {
+  "seo": {
+    "title": "Template institucional — Arquitetura demonstrativa",
+    "description": "Demonstração de uma arquitetura modular, acessível e orientada por dados para sites institucionais."
+  },
   "hero": {
     "eyebrow": "Template institucional",
     "title": "Uma base clara para sites institucionais.",

@@ -8,7 +8,6 @@ export function initLanguageSelector(container, options) {
   const select = document.createElement('select');
 
   label.textContent = options.label;
-  select.setAttribute('aria-label', options.label);
 
   for (const locale of options.locales) {
     const option = document.createElement('option');
