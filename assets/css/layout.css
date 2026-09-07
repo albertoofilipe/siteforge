@@ -16,3 +16,21 @@
   margin-inline: auto;
   padding-block: var(--space-6);
 }
+
+.section {
+  padding-block: var(--space-7);
+}
+
+.section-muted {
+  background: var(--color-surface);
+}
+
+.section-heading {
+  max-width: var(--container-sm);
+  margin-bottom: var(--space-6);
+}
+
+.card-grid {
+  display: grid;
+  gap: var(--space-4);
+}

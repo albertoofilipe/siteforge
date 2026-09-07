@@ -1,6 +1,54 @@
 {
   "hero": {
-    "title": "Institutional Website Architecture",
-    "description": "A foundation for future institutional websites."
+    "eyebrow": "Institutional template",
+    "title": "A clear foundation for institutional websites.",
+    "description": "A demonstration of a modular architecture with separate content, reusable components, and native JavaScript.",
+    "cta": "Explore the structure"
+  },
+  "about": {
+    "eyebrow": "Overview",
+    "title": "An architecture designed to grow clearly.",
+    "description": "This environment demonstrates how to organize pages, data, styles, and behavior without unnecessary coupling."
+  },
+  "services": {
+    "eyebrow": "Template foundation",
+    "title": "Elements that work together",
+    "items": [
+      {
+        "title": "Structured content",
+        "description": "Page and language texts live in JSON files that are easy to locate."
+      },
+      {
+        "title": "Reusable components",
+        "description": "Header, navigation, and footer are shared without duplicating HTML."
+      },
+      {
+        "title": "Consistent styles",
+        "description": "Tokens and simple classes keep the interface easy to customize."
+      }
+    ]
+  },
+  "highlights": {
+    "eyebrow": "Highlights",
+    "title": "Practical decisions for real projects",
+    "items": [
+      {
+        "title": "No dependencies",
+        "description": "Native HTML, CSS, and ES Modules reduce operational complexity."
+      },
+      {
+        "title": "Language-ready",
+        "description": "Fallback keeps content available when a translation does not yet exist."
+      },
+      {
+        "title": "Gradual evolution",
+        "description": "New features are introduced only when they meet a concrete need."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Use this foundation as a starting point.",
+    "description": "Customize configuration, data, and components for the next institutional project.",
+    "action": "Read the documentation"
   }
 }

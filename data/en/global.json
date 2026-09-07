@@ -1,12 +1,16 @@
 {
   "common": {
-    "language": "Language"
+    "language": "Language",
+    "skipToContent": "Skip to main content"
   },
   "footer": {
     "copyright": "All rights reserved."
   },
   "navigation": {
-    "home": "Home"
+    "about": "About",
+    "services": "Services",
+    "highlights": "Highlights",
+    "cta": "Get started"
   },
   "site": {
     "name": "Institutional Website Architecture"

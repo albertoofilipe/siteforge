@@ -1,6 +1,54 @@
 {
   "hero": {
-    "title": "Institutional Website Architecture",
-    "description": "Estrutura-base para futuros sites institucionais."
+    "eyebrow": "Template institucional",
+    "title": "Uma base clara para sites institucionais.",
+    "description": "Demonstração de uma arquitetura modular com conteúdo separado, componentes reutilizáveis e JavaScript nativo.",
+    "cta": "Explorar a estrutura"
+  },
+  "about": {
+    "eyebrow": "Visão geral",
+    "title": "Uma arquitetura pensada para crescer com clareza.",
+    "description": "Este ambiente demonstra como organizar páginas, dados, estilos e comportamentos sem acoplamentos desnecessários."
+  },
+  "services": {
+    "eyebrow": "Base do template",
+    "title": "Elementos que trabalham juntos",
+    "items": [
+      {
+        "title": "Conteúdo estruturado",
+        "description": "Textos por página e idioma ficam em arquivos JSON fáceis de localizar."
+      },
+      {
+        "title": "Componentes reutilizáveis",
+        "description": "Cabeçalho, navegação e rodapé são compartilhados sem duplicar HTML."
+      },
+      {
+        "title": "Estilos consistentes",
+        "description": "Tokens e classes simples mantêm a interface fácil de personalizar."
+      }
+    ]
+  },
+  "highlights": {
+    "eyebrow": "Diferenciais",
+    "title": "Decisões práticas para projetos reais",
+    "items": [
+      {
+        "title": "Sem dependências",
+        "description": "HTML, CSS e ES Modules nativos reduzem a complexidade operacional."
+      },
+      {
+        "title": "Preparado para idiomas",
+        "description": "O fallback mantém o conteúdo disponível quando uma tradução ainda não existe."
+      },
+      {
+        "title": "Evolução gradual",
+        "description": "Novos recursos entram apenas quando atendem a uma necessidade concreta."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Use esta base como ponto de partida.",
+    "description": "Personalize a configuração, os dados e os componentes conforme o próximo projeto institucional.",
+    "action": "Ver documentação"
   }
 }

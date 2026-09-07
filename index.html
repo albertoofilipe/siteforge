@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Template para sites institucionais.">
+    <meta name="description" content="Demonstração da arquitetura para sites institucionais.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#075985">
     <title>Institutional Website Architecture</title>
     <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/variables.css">
@@ -16,11 +18,58 @@
     <script type="module" src="assets/js/main.js"></script>
   </head>
   <body data-page="home">
+    <a class="skip-link" href="#main-content" data-i18n="common.skipToContent"></a>
     <div data-component-slot="header"></div>
-    <main class="page-content">
-      <h1 data-i18n="hero.title">Institutional Website Architecture</h1>
-      <p data-i18n="hero.description">Estrutura-base para futuros sites institucionais.</p>
+
+    <main id="main-content">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="container hero-content flow">
+          <p class="eyebrow" data-i18n="hero.eyebrow"></p>
+          <h1 id="hero-title" data-i18n="hero.title"></h1>
+          <p data-i18n="hero.description"></p>
+          <p><a class="button" href="#services" data-i18n="hero.cta"></a></p>
+        </div>
+      </section>
+
+      <section id="about" class="section section-muted" aria-labelledby="about-title">
+        <div class="container flow">
+          <div class="section-heading flow">
+            <p class="eyebrow" data-i18n="about.eyebrow"></p>
+            <h2 id="about-title" data-i18n="about.title"></h2>
+            <p data-i18n="about.description"></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="services" class="section" aria-labelledby="services-title">
+        <div class="container">
+          <div class="section-heading flow">
+            <p class="eyebrow" data-i18n="services.eyebrow"></p>
+            <h2 id="services-title" data-i18n="services.title"></h2>
+          </div>
+          <div class="card-grid" data-home-services></div>
+        </div>
+      </section>
+
+      <section id="highlights" class="section section-muted" aria-labelledby="highlights-title">
+        <div class="container">
+          <div class="section-heading flow">
+            <p class="eyebrow" data-i18n="highlights.eyebrow"></p>
+            <h2 id="highlights-title" data-i18n="highlights.title"></h2>
+          </div>
+          <div class="card-grid" data-home-highlights></div>
+        </div>
+      </section>
+
+      <section id="cta" class="section cta" aria-labelledby="cta-title">
+        <div class="container cta-content flow">
+          <h2 id="cta-title" data-i18n="cta.title"></h2>
+          <p data-i18n="cta.description"></p>
+          <p><a class="button" href="README.md" data-i18n="cta.action"></a></p>
+        </div>
+      </section>
     </main>
+
     <div data-component-slot="footer"></div>
   </body>
 </html>

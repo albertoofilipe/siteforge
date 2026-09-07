@@ -34,10 +34,14 @@ export function createI18n(config, loader, preferredLocale = getPreferredLocale(
     const current = locale === defaultLocale ? fallback : await loadLocaleFiles(locale, pageName);
 
     return Object.freeze({
+      get: (key, fallbackValue) => getTranslationValue(key, current, fallback, fallbackValue),
       global: current.global,
       locale,
       page: current.page,
-      translate: (key, fallbackText = '') => translate(key, current, fallback, fallbackText),
+      translate: (key, fallbackText = '') => {
+        const value = getTranslationValue(key, current, fallback, fallbackText);
+        return typeof value === 'string' ? value : fallbackText;
+      },
     });
   }
 
@@ -86,12 +90,12 @@ export function applyTranslations(translations, documentRef = document) {
   }
 }
 
-function translate(key, current, fallback, fallbackText) {
+function getTranslationValue(key, current, fallback, fallbackValue) {
   return getValue(current.page, key)
     ?? getValue(current.global, key)
     ?? getValue(fallback.page, key)
     ?? getValue(fallback.global, key)
-    ?? fallbackText;
+    ?? fallbackValue;
 }
 
 function getValue(source, key) {

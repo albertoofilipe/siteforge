@@ -1,5 +1,6 @@
 import { createCache } from './cache.js';
 import { createComponentLoader } from '../components/component-loader.js';
+import { initHome } from '../features/home.js';
 import { loadConfig } from './config.js';
 import { applyTranslations, createI18n, getCurrentPage } from './i18n.js';
 import { createResourceLoader } from './loader.js';
@@ -22,6 +23,10 @@ export async function initApp() {
     applyTheme(config.theme);
     await componentLoader.load(document);
     applyTranslations(translations);
+
+    if (page === 'home') {
+      initHome(translations);
+    }
 
     if (config.options.showLanguageSelector) {
       const selector = document.querySelector('[data-language-selector]');
