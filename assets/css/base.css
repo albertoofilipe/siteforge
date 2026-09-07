@@ -47,7 +47,6 @@ a:hover {
   color: var(--color-primary-hover);
 }
 
-button,
 input,
 select,
 textarea {
@@ -55,20 +54,27 @@ textarea {
   border-radius: var(--radius-md);
 }
 
-button {
+button,
+.button {
   min-height: var(--control-height);
   padding-inline: var(--space-4);
   background: var(--color-primary);
   color: var(--color-primary-text);
-  border-color: var(--color-primary);
-  cursor: pointer;
+  border: var(--border-width) solid var(--color-primary);
+  border-radius: var(--radius-md);
   font-weight: var(--font-weight-semibold);
   transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
-button:hover:not(:disabled) {
+button {
+  cursor: pointer;
+}
+
+button:hover:not(:disabled),
+.button:hover {
   background: var(--color-primary-hover);
   border-color: var(--color-primary-hover);
+  color: var(--color-primary-text);
 }
 
 button:disabled {

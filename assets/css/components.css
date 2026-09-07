@@ -85,20 +85,7 @@
 .button {
   display: inline-flex;
   align-items: center;
-  min-height: var(--control-height);
-  padding-inline: var(--space-4);
-  background: var(--color-primary);
-  border: var(--border-width) solid var(--color-primary);
-  border-radius: var(--radius-md);
-  color: var(--color-primary-text);
-  font-weight: var(--font-weight-semibold);
   text-decoration: none;
-}
-
-.button:hover {
-  background: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
-  color: var(--color-primary-text);
 }
 
 .card {

@@ -15,8 +15,11 @@ export async function initApp() {
     const config = await loadConfig(loader);
     const i18n = createI18n(config, loader);
     const page = getCurrentPage();
-    const translations = await i18n.loadPage(page);
     const componentLoader = createComponentLoader({ loader });
+    const [translations] = await Promise.all([
+      i18n.loadPage(page),
+      componentLoader.load(document),
+    ]);
 
     setDocumentLanguage(i18n.locale);
     applyDocumentMetadata({
@@ -27,7 +30,6 @@ export async function initApp() {
       title: translations.translate('seo.title', config.company.name),
     });
     applyTheme(config.theme);
-    await componentLoader.load(document);
     applyTranslations(translations);
 
     if (page === 'home') {

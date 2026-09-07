@@ -167,6 +167,50 @@ O template é uma demonstração e, por segurança, vem com `noindex, nofollow` 
 - [ ] Testar navegação apenas com teclado, foco visível, zoom de 200% e preferência por movimento reduzido.
 - [ ] Revisar headings, textos de links, labels e alternativas de todas as imagens novas.
 
+## Performance
+
+A base prioriza tempo de carregamento percebido e manutenção simples. Não há frameworks, bibliotecas de interface, fontes remotas ou imagens de conteúdo na demonstração. Os módulos ES são carregados com `<script type="module">`, que já tem comportamento `defer`; não acrescente `defer` nem `async` ao mesmo arquivo. Os CSS críticos continuam como arquivos externos separados por responsabilidade: são pequenos, fáceis de manter e reutilizáveis pelo cache HTTP.
+
+### Carregamento e dados
+
+- A configuração é carregada uma vez. Depois dela, os JSONs de idioma e os componentes HTML iniciam em paralelo para evitar uma cascata entre conteúdo e interface.
+- `createResourceLoader` mantém um cache em memória por URL e tipo durante a página aberta, inclusive para chamadas simultâneas. Preserve esse ponto central de carregamento em vez de fazer `fetch` avulso nos componentes.
+- Os arquivos JSON devem conter apenas o conteúdo da página necessária, sem duplicar catálogos grandes em cada idioma. Use uma chave de página nova quando houver uma página nova.
+- Não registre um Service Worker apenas para cachear esta demo. Defina uma estratégia versionada e teste atualizações offline antes de ativá-lo; um cache desatualizado prejudica mais do que uma requisição pequena.
+
+### Imagens, ícones e fontes
+
+Ainda não há imagens de conteúdo neste template; por isso não há `srcset`, `sizes`, `loading="lazy"` ou preload sem uso. Ao adicionar uma imagem, escolha a regra conforme sua posição:
+
+- Imagem informativa no topo: defina `width` e `height` reais para reservar espaço. Use `<picture>` ou `srcset` com `sizes` quando existirem versões em larguras diferentes. Não use `loading="lazy"` na imagem que compõe o LCP.
+- Imagem fora da primeira dobra: mantenha `width` e `height`, use `loading="lazy"` e `decoding="async"`. O navegador deve escolher o recurso com `srcset`/`sizes`; não envie a maior versão para todos os dispositivos.
+- Ícones pequenos e identidade: prefira SVG local quando ele for simples. Não converta um SVG pequeno em uma biblioteca inteira de ícones.
+- Fontes: mantenha a pilha de fontes do sistema enquanto não houver uma necessidade de marca. Se uma fonte web for indispensável, sirva somente os formatos, pesos e subconjuntos usados, configure `font-display: swap` e faça preload apenas da fonte crítica que realmente aparece acima da dobra.
+
+Exemplo de imagem responsiva fora da primeira dobra:
+
+```html
+<img
+  src="assets/images/exemplo-960.webp"
+  srcset="assets/images/exemplo-480.webp 480w,
+          assets/images/exemplo-960.webp 960w,
+          assets/images/exemplo-1440.webp 1440w"
+  sizes="(min-width: 64rem) 33vw, 100vw"
+  width="960"
+  height="640"
+  loading="lazy"
+  decoding="async"
+  alt="Descrição objetiva da informação mostrada"
+>
+```
+
+### Entrega e revisão
+
+- Configure o servidor/CDN para cache longo e imutável em arquivos versionados (`assets/*.css`, `assets/*.js`, imagens e fontes) e revalidação curta para HTML, JSON, `robots.txt` e sitemap. Sem nomes versionados, não use cache imutável nos assets.
+- Preload é excepcional: use-o somente após medição mostrar que um recurso realmente crítico está atrasando a renderização. Não faça preload de JSON, componentes, imagens fora da dobra ou recursos que o navegador já descobre cedo.
+- Evite CSS e JavaScript duplicados; regras comuns de botão ficam compartilhadas em `base.css`, enquanto a apresentação específica do link-botão permanece em `components.css`.
+- Antes de publicar, avalie uma página em rede móvel e um dispositivo de menor capacidade. Verifique LCP, CLS e INP, requisições bloqueantes, peso das imagens e se a troca de idioma continua usando os JSONs esperados.
+
 ## Como usar
 
 1. Abra a pasta no VS Code.
